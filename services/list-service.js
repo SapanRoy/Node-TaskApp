@@ -3,7 +3,6 @@ const cardListDAL = require('../data/data-access-layer');
 
 const addList = function (req) {
     try {
-        console.log(JSON.stringify(req.body));
         if (!req.body.name) {
             throw 'List name is required.'
         }
@@ -15,6 +14,7 @@ const addList = function (req) {
 }
 
 const deleteList = function (id) {
+    console.log('Delete list service '+id)
     try {
         cardListDAL.deleteList(id);
     }

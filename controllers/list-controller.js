@@ -5,8 +5,8 @@ const HTTPSTATUSCODE = require('../constant/app-const');
 
 const addList = function (req, res) {
     try {
-        let newID = listService.addList(req);
-        return res.status(HTTPSTATUSCODE.CREATED).json({ "id": newID });
+        let newList = listService.addList(req);
+        return res.status(HTTPSTATUSCODE.CREATED).json(newList);
     }
     catch (err) {
         res.status(HTTPSTATUSCODE.INTERNALSERVERERROR).json({ error: err.toString() });

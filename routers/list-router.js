@@ -10,9 +10,9 @@ listRouter.post("/lists", (req, res) => {
 listRouter.get("/lists", (req, res) => {
     listController.getAllList(req, res);
 });
-// listRouter.delete("/list/delete/:id", (req, res) => {
-//     listController.deleteList(req, res);
-// });
+listRouter.delete("/lists/:id", (req, res) => {
+    listController.deleteList(req, res);
+});
 // listRouter.get("/list/get/:id", (req, res) => {
 //     listController.getListById(req, res);
 // });
