@@ -13,13 +13,5 @@ listRouter.get("/lists", (req, res) => {
 listRouter.delete("/lists/:id", (req, res) => {
     listController.deleteList(req, res);
 });
-// listRouter.get("/list/get/:id", (req, res) => {
-//     listController.getListById(req, res);
-// });
-
-// get card from list by listid and card id
-// listRouter.post("/list/card", (req, res) => {
-//     listController.getCardsFromList(req, res);
-// });
 
 module.exports.listRouter = listRouter;
