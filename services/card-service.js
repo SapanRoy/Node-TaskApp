@@ -3,15 +3,18 @@ const cardListDAL = require('../data/data-access-layer');
 
 const addCard = function (req) {
     try {
-        if (!req.body.card.name) {
+        if (!req.body.name) {
             throw 'Card name is required.'
         }
-        let cardId = cardListDAL.addCard(req.body.card);
-        return { "parentListId": req.body.card.parentListId, "newCardId": cardId }
-
+        if (!req.body.parentListId) {
+            throw 'Card need a parent list id to be added.'
+        }
+        let result = cardListDAL.addCard(req.body);
+        return JSON.stringify(result);
     }
-    catch (error) {
-        throw error;
+    catch (err) {
+        console.log(`Card service->addCard->${err}`);
+        throw err;
     }
 }
 

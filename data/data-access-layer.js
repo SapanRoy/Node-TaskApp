@@ -45,10 +45,19 @@ const deleteList = function (id) {
     }
 }
 const addCard = function (cardData) {
-    let id = shortid.generate();
-    let listIndex = db.getIndex("/lists", cardData.parentListId);
-    db.push(`/lists[${listIndex}]/cards[]`, { id: id, name: cardData.name }, true);
-    return id;
+    try {
+        let id = shortid.generate();
+        let listIndex = db.getIndex("/lists", cardData.parentListId);
+        db.push(`/lists[${listIndex}]/cards[]`, { id: id, name: cardData.name }, true);
+        card = getCardById(cardData.parentListId, id);
+        let newCard = { id: id, name: card.name, parentListId: cardData.parentListId };
+        console.log(JSON.stringify(newCard));
+        return newCard;
+    }
+    catch (err) {
+        console.log(`DAL->addCard->${err}`);
+        throw err
+    }
 }
 const getCardById = function (listId, cardId) {
     try {
@@ -57,6 +66,7 @@ const getCardById = function (listId, cardId) {
         return db.getData(`/lists[${listIndex}]/cards[${cardIndex}]`);
     }
     catch (err) {
+        console.log(`getCardById->${err}`);
         throw err;
     }
 }
@@ -74,15 +84,6 @@ const moveCard = function (sourceListId, targetListId, cardId) {
     try {
         // local copy
         let card = getCardById(sourceListId, cardId);
-        // let sourceList = getListById(sourceListId);
-        // let targetList = getListById(targetListId);
-
-        // console.log(`source List-${JSON.stringify(sourceList)}`);
-        // console.log("--------------------------------");
-        // console.log(`target List-${JSON.stringify(targetList)}`);
-        // console.log("--------------------------------");
-        // console.log(`dragged Card-${JSON.stringify(card)}`);
-
         // delete from source
         deleteCard(sourceListId, card);
         let cardData = new Object();
