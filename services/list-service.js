@@ -14,7 +14,6 @@ const addList = function (req) {
 }
 
 const deleteList = function (id) {
-    console.log('Delete list service '+id)
     try {
         cardListDAL.deleteList(id);
     }
@@ -28,7 +27,6 @@ const getListById = function (id) {
         return list;
     }
     catch (error) {
-        console.log(`error -> ${error}`)
         throw error;
     }
 }
@@ -37,7 +35,6 @@ const getAllList = function () {
         return cardListDAL.getAllList() ;;
     }
     catch (error) {
-        console.log(`fetch lists error -> ${error}`);
         throw error;
     }
 }
@@ -48,7 +45,6 @@ const getCardFromList = function (cardListParam) {
         return { "id": card.id, "name": card.name, "parentListId": cardListParam.listId };
     }
     catch (err) {
-        console.log(err);
         throw err;
     }
 }

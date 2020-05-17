@@ -41,17 +41,6 @@ const getAllList = function (req, res) {
         res.status(HTTPSTATUSCODE.NOCONTENT).json({ error: err.toString() });
     }
 }
-// TODO: Not needed
-// const getCardsByListId = function (req, res) {
-//     try {
-//         let cards = listService.getCardsByList(req.params.id);
-//         return res.status(HTTPSTATUSCODE.OK).json({ "id": req.params.id, "name": listName });
-//     }
-//     catch (err) {
-//         res.status(HTTPSTATUSCODE.NOCONTENT).json({ error: err.toString() });
-//     }
-// }
-
 const getCardsFromList = function (req, res) {
     try {
         let card = listService.getCardFromList(req.body);
@@ -67,6 +56,5 @@ module.exports = {
     deleteList: deleteList,
     getListById: getListById,
     getAllList: getAllList,
-    // getCardsByListId: getCardsByListId,
     getCardsFromList: getCardsFromList
 };

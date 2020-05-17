@@ -51,11 +51,9 @@ const addCard = function (cardData) {
         db.push(`/lists[${listIndex}]/cards[]`, { id: id, name: cardData.name }, true);
         card = getCardById(cardData.parentListId, id);
         let newCard = { id: id, name: card.name, parentListId: cardData.parentListId };
-        console.log(JSON.stringify(newCard));
         return newCard;
     }
     catch (err) {
-        console.log(`DAL->addCard->${err}`);
         throw err
     }
 }
@@ -66,7 +64,6 @@ const getCardById = function (listId, cardId) {
         return db.getData(`/lists[${listIndex}]/cards[${cardIndex}]`);
     }
     catch (err) {
-        console.log(`getCardById->${err}`);
         throw err;
     }
 }
@@ -86,12 +83,14 @@ const moveCard = function (sourceListId, targetListId, cardId) {
         let card = getCardById(sourceListId, cardId);
         // delete from source
         deleteCard(sourceListId, card);
+
         let cardData = new Object();
         cardData["parentListId"] = targetListId;
-        cardData["id"] = card.id;
+        // cardData["id"] = card.id;
         cardData["name"] = card.name;
         // add to target
         addCard(cardData);
+
     } catch (err) { throw err }
 }
 const getCardFromList = function (cardListParam) {

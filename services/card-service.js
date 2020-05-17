@@ -13,7 +13,6 @@ const addCard = function (req) {
         return JSON.stringify(result);
     }
     catch (err) {
-        console.log(`Card service->addCard->${err}`);
         throw err;
     }
 }
@@ -53,7 +52,6 @@ const getCardById = function (listId, cardId) {
         return card;
     }
     catch (error) {
-        console.log(`error -> ${error}`)
         throw error;
     }
 }
