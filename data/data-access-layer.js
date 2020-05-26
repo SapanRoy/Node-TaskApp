@@ -1,50 +1,45 @@
-
-const DB = require('../../node_modules/node-json-db');
-const JsonDBConfig = require('../../node_modules/node-json-db/dist/lib/JsonDBConfig');
+const DB = require('node-json-db');
+const JsonDBConfig = require('../node_modules/node-json-db/dist/lib/JsonDBConfig');
 
 // set db
 var db = new DB.JsonDB(new JsonDBConfig.Config("listCardDB", true, false, '/'));
-const shortid = require('../../node_modules/shortid');
+const shortid = require('shortid');
 
-const addList = function (listData) {
+const addList = function(listData) {
     try {
         let id = shortid.generate();
         db.push("/lists[]", { id: id, name: listData.name }, true);
         return getListById(id);
-    }
-    catch (err) {
+    } catch (err) {
         throw err;
     }
 };
 
-const getAllList = function () {
+const getAllList = function() {
     try {
         return db.getData("/lists");
-    }
-    catch (err) {
+    } catch (err) {
         throw err;
     }
 }
-const getListById = function (id) {
+const getListById = function(id) {
     try {
         let index = db.getIndex("/lists", id)
         return db.getData(`/lists[${index}]`);
 
-    }
-    catch (err) {
+    } catch (err) {
         throw err;
     }
 }
-const deleteList = function (id) {
+const deleteList = function(id) {
     try {
         let listIndex = db.getIndex("/lists", id);
         db.delete(`/lists[${listIndex}]`);
-    }
-    catch (err) {
+    } catch (err) {
         throw err;
     }
 }
-const addCard = function (cardData) {
+const addCard = function(cardData) {
     try {
         let id = shortid.generate();
         let listIndex = db.getIndex("/lists", cardData.parentListId);
@@ -52,32 +47,29 @@ const addCard = function (cardData) {
         card = getCardById(cardData.parentListId, id);
         let newCard = { id: id, name: card.name, parentListId: cardData.parentListId };
         return newCard;
-    }
-    catch (err) {
+    } catch (err) {
         throw err
     }
 }
-const getCardById = function (listId, cardId) {
+const getCardById = function(listId, cardId) {
     try {
         let listIndex = db.getIndex("/lists", listId);
         let cardIndex = db.getIndex(`/lists[${listIndex}]/cards`, cardId);
         return db.getData(`/lists[${listIndex}]/cards[${cardIndex}]`);
-    }
-    catch (err) {
+    } catch (err) {
         throw err;
     }
 }
-const deleteCard = function (listId, cardId) {
+const deleteCard = function(listId, cardId) {
     try {
         let listIndex = db.getIndex("/lists", listId);
         let cardIndex = db.getIndex(`/lists[${listIndex}]/cards`, cardId);
         db.delete(`/lists[${listIndex}]/cards[${cardIndex}]`);
-    }
-    catch (err) {
+    } catch (err) {
         throw err;
     }
 }
-const moveCard = function (sourceListId, targetListId, cardId) {
+const moveCard = function(sourceListId, targetListId, cardId) {
     try {
         // local copy
         let card = getCardById(sourceListId, cardId);
@@ -93,7 +85,7 @@ const moveCard = function (sourceListId, targetListId, cardId) {
 
     } catch (err) { throw err }
 }
-const getCardFromList = function (cardListParam) {
+const getCardFromList = function(cardListParam) {
     let listIndex = db.getIndex("/lists", cardListParam.listId);
     let cardIndex = db.getIndex(`/lists[${listIndex}]/cards`, cardListParam.cardId);
     return db.getData(`/lists[${listIndex}]/cards[${cardIndex}]`);
