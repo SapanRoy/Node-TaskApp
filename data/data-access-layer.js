@@ -4,16 +4,39 @@ const JsonDBConfig = require('../node_modules/node-json-db/dist/lib/JsonDBConfig
 // set db
 var db = new DB.JsonDB(new JsonDBConfig.Config("listCardDB", true, false, '/'));
 const shortid = require('shortid');
+squenceNo = 0;
 
 const addList = function(listData) {
     try {
+        let allList = Array.from(getAllList());
+        let foundList = allList.filter(((item) => {
+            return item.name == listData.name;
+        }));
+        if (foundList.length > 0)
+            throw `List [${listData.name}] already exist.`;
+
         let id = shortid.generate();
-        db.push("/lists[]", { id: id, name: listData.name }, true);
+
+        squenceNo = squenceNo + 1;
+        db.push("/lists[]", { id: id, squenceNo: squenceNo, isEditMode: false, name: listData.name }, true);
         return getListById(id);
     } catch (err) {
         throw err;
     }
 };
+
+const editList = function(list) {
+    try {
+        existingList = getListById(list.id);
+        existingList.name = list.name;
+        deleteList(list.id);
+        db.push("/lists[]", existingList);
+        let updatedList = {...existingList, isEditMode: false };
+        return updatedList;
+    } catch (err) {
+        throw err;
+    }
+}
 
 const getAllList = function() {
     try {
@@ -93,6 +116,7 @@ const getCardFromList = function(cardListParam) {
 module.exports = {
     addList: addList,
     deleteList: deleteList,
+    editList: editList,
     getListById: getListById,
     getAllList: getAllList,
     getCardFromList: getCardFromList,
